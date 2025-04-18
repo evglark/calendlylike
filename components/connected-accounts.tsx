@@ -11,10 +11,12 @@ export function ConnectedAccounts() {
 
   const handleConnectGoogle = async () => {
     try {
-      await connectGoogleCalendar()
-      // In a real app, we would update the accounts state after successful connection
+      const res = await connectGoogleCalendar();
+      if (res?.url) {
+        window.location.href = res.url;
+      }
     } catch (error) {
-      console.error("Failed to connect Google Calendar", error)
+      console.error("Failed to connect Google Calendar", error);
     }
   }
 

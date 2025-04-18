@@ -5,7 +5,7 @@ import NextLink from "next/link"
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center justify-center">
         <div className="container flex h-14 items-center">
           <div className="mr-4 flex">
             <NextLink href="/" className="flex items-center space-x-2">
@@ -22,8 +22,8 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32">
+      <main className="flex-1 flex items-center justify-center">
+        <section className="w-full max-w-7xl px-4 md:px-8">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
               <div className="flex flex-col justify-center space-y-4">

@@ -8,7 +8,6 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || ""
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || ""
 const REDIRECT_URI = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/google/callback`
 
-// Scopes needed for Google Calendar
 const SCOPES = [
   "https://www.googleapis.com/auth/calendar",
   "https://www.googleapis.com/auth/calendar.events",
@@ -17,18 +16,17 @@ const SCOPES = [
 ]
 
 export async function connectGoogleCalendar() {
-  // Generate a state value for CSRF protection
   const state = Math.random().toString(36).substring(2)
+  const cookieStore = await cookies();
 
   // Store state in cookies for verification later
-  cookies().set("oauth_state", state, {
+  cookieStore.set("oauth_state", state, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 10, // 10 minutes
     path: "/",
   })
 
-  // Construct the authorization URL
   const authUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth")
   authUrl.searchParams.append("client_id", GOOGLE_CLIENT_ID)
   authUrl.searchParams.append("redirect_uri", REDIRECT_URI)
@@ -42,8 +40,8 @@ export async function connectGoogleCalendar() {
 }
 
 export async function handleGoogleCallback(code: string, state: string) {
-  // Verify state to prevent CSRF attacks
-  const storedState = cookies().get("oauth_state")?.value
+  const cookieStore = await cookies();
+  const storedState = cookieStore.get("oauth_state")?.value;
 
   if (!storedState || storedState !== state) {
     throw new Error("Invalid state parameter")
@@ -89,6 +87,7 @@ export async function handleGoogleCallback(code: string, state: string) {
   }
 
   const userInfo = await userInfoResponse.json()
+  console.log("User Info:", userInfo);
 
   // Return user info and token expiration
   return {
